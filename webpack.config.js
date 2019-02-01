@@ -42,6 +42,10 @@ module.exports = {
     }, {
       test: /\.css$/,
       loader: 'style!css'
+    },
+    {
+      test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+      loader: 'file-loader'
     }]
   }
 };
