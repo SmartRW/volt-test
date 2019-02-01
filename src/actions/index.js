@@ -6,21 +6,39 @@ export const updateCustomersData = createAction('CUSTOMERS_DATA_UPDATE');
 
 export const customersDataGettingSuccess = createAction('GET_CUSTOMERS_DATA_SUCCESS');
 
-export const customersDataGettingPending = createAction('GET_CUSTOMERS_DATA_PENDING');
+export const customersDataGettingRequest = createAction('GET_CUSTOMERS_DATA_REQUEST');
 
 export const customersDataGettingFailure = createAction('GET_CUSTOMERS_DATA_FAILURE');
 
 export const getCustomersData = () => async (dispatch) => {
   const url = routes.getCustomersUrl();
   try {
-    dispatch(customersDataGettingPending());
-    const response = await axios.get(url);
-    const customers = response.data;
-    console.dir(customers);
-    dispatch(updateCustomersData({ data: customers }));
+    dispatch(customersDataGettingRequest());
+    const { data } = await axios.get(url);
+    dispatch(updateCustomersData({ data }));
     dispatch(customersDataGettingSuccess());
   } catch (e) {
     dispatch(customersDataGettingFailure());
+    console.error(e);
+  }
+};
+
+export const editCustomerRequest = createAction('CUSTOMER_EDITING_REQUEST');
+export const editCustomerSuccess = createAction('CUSTOMER_EDIT_SUCCESS');
+export const editCustomerFailure = createAction('CUSTOMER_EDIT_FAILURE');
+
+export const addingCustomer = createAction('CUSTOMER_ADD');
+
+export const addCustomer = ({ values, handleClose }) => async (dispatch) => {
+  const url = routes.getCustomersUrl();
+  try {
+    dispatch(editCustomerRequest());
+    const { data } = await axios.post(url, values);
+    dispatch(addingCustomer({ data }));
+    handleClose();
+    dispatch(editCustomerSuccess());
+  } catch (e) {
+    dispatch(editCustomerFailure());
     console.error(e);
   }
 };

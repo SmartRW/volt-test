@@ -4,9 +4,15 @@ import { handleActions } from 'redux-actions';
 import * as actions from '../actions';
 
 const getCustomersDataStatus = handleActions({
-  [actions.customersDataGettingSuccess]: () => 'success',
-  [actions.customersDataGettingPending]: () => 'pending',
-  [actions.customersDataGettingFailure]: () => 'failure',
+  [actions.customersDataGettingRequest]: () => 'requested',
+  [actions.customersDataGettingSuccess]: () => 'succeeded',
+  [actions.customersDataGettingFailure]: () => 'failed',
+}, '');
+
+const editCustomerStatus = handleActions({
+  [actions.editCustomerRequest]: () => 'requested',
+  [actions.editCustomerSuccess]: () => 'succeeded',
+  [actions.editCustomerFailure]: () => 'failed',
 }, '');
 
 const customers = handleActions({
@@ -14,10 +20,15 @@ const customers = handleActions({
     ...state,
     ...data.reduce((acc, customer) => ({ ...acc, [customer.id]: customer }), {}),
   }),
+  [actions.addingCustomer]: (state, { payload: { data } }) => ({
+    ...state,
+    [data.id]: data,
+  }),
 }, {});
 
 export default combineReducers({
   getCustomersDataStatus,
+  editCustomerStatus,
   customers,
   form: formReducer,
 });

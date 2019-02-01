@@ -1,6 +1,9 @@
 import 'babel-polyfill';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../public/bootstrap/css/bootstrap.min.css';
+// import '../public/bootstrap/css/bootstrap-theme.min.css';
 import 'react-select/dist/react-select.css';
+import '../assets/application.css';
 import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { render } from 'react-dom';
@@ -12,13 +15,8 @@ import reducers from './reducers';
 // eslint-disable-next-line no-underscore-dangle
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const initialState = {
-  getCustomersDataStatus: '',
-};
-
 const store = createStore(
   reducers,
-  initialState,
   composeEnhancers(
     applyMiddleware(thunk),
   ),
