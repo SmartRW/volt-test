@@ -1,6 +1,8 @@
+import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
+import Root from './components/Root';
 
 import 'react-select/dist/react-select.css';
 
-render(<div>Place your application here</div>, document.getElementById('app-root'));
+render(<Root />, document.getElementById('app-root'));
