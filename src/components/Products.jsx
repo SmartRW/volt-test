@@ -57,6 +57,7 @@ class Customers extends React.Component {
 
   componentDidMount = () => {
     const { getProductsData } = this.props;
+    document.title = 'Products';
     getProductsData();
   }
 
