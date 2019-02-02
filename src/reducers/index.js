@@ -24,6 +24,10 @@ const customers = handleActions({
     [data.id]: data,
   }),
   [actions.deletingCustomer]: (state, { payload: { data } }) => omit(state, data.id),
+  [actions.editingCustomer]: (state, { payload: { data } }) => ({
+    ...state,
+    [data.id]: data,
+  }),
 }, {});
 
 const currentlyEditedCustomerId = handleActions({

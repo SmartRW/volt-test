@@ -61,3 +61,23 @@ export const deleteCustomer = ({ customerId, handleClose }) => async (dispatch) 
     console.error(e);
   }
 };
+
+export const editingCustomer = createAction('CUSTOMER_EDIT');
+
+export const editCustomer = ({
+  currentlyEditedCustomerId,
+  values,
+  handleClose,
+}) => async (dispatch) => {
+  const url = routes.getCustomerUrl(currentlyEditedCustomerId);
+  try {
+    dispatch(editCustomerRequest());
+    const { data } = await axios.put(url, values);
+    dispatch(editingCustomer({ data }));
+    handleClose();
+    dispatch(editCustomerSuccess());
+  } catch (e) {
+    dispatch(editCustomerFailure());
+    console.error(e);
+  }
+};

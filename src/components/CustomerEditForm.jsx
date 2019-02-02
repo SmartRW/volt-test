@@ -8,14 +8,25 @@ import connect from '../utils/connect';
 const mapStateToProps = ({ customers, currentlyEditedCustomerId }) => ({
   customers: Object.values(customers),
   initialValues: customers[currentlyEditedCustomerId],
+  currentlyEditedCustomerId,
 });
 
 @connect(mapStateToProps)
 @reduxForm({ form: 'editCustomer', enableReinitialize: true })
 class CustomerEditForm extends React.Component {
   handleSubmit = async (values) => {
-    const { handleClose, addCustomer } = this.props;
-    await addCustomer({ values, handleClose });
+    const {
+      handleClose,
+      addCustomer,
+      editCustomer,
+      currentlyEditedCustomerId,
+    } = this.props;
+
+    if (currentlyEditedCustomerId) {
+      await editCustomer({ currentlyEditedCustomerId, values, handleClose });
+    } else {
+      await addCustomer({ values, handleClose });
+    }
   }
 
   render = () => {
