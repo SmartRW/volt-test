@@ -42,3 +42,22 @@ export const addCustomer = ({ values, handleClose }) => async (dispatch) => {
     console.error(e);
   }
 };
+
+export const setCurrentlyEditedCustomerId = createAction('CURRENTLY_EDITED_CUSTOMER_ID_SET');
+export const resetCurrentlyEditedCustomerId = createAction('CURRENTLY_EDITED_CUSTOMER_ID_RESET');
+
+export const deletingCustomer = createAction('CUSTOMER_DELETE');
+
+export const deleteCustomer = ({ customerId, handleClose }) => async (dispatch) => {
+  const url = routes.getCustomerUrl(customerId);
+  try {
+    dispatch(editCustomerRequest());
+    const { data } = await axios.delete(url, customerId);
+    dispatch(deletingCustomer({ data }));
+    handleClose();
+    dispatch(editCustomerSuccess());
+  } catch (e) {
+    dispatch(editCustomerFailure());
+    console.error(e);
+  }
+};

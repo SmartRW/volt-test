@@ -2,10 +2,10 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 const DeleteCustomerModal = (props) => {
-  const { onHide, deleteCustomer } = props;
+  const { onHide, deleteCustomer, ...rest } = props;
   return (
     <Modal
-      {...props}
+      {...rest}
       centered
       size="lg"
     >

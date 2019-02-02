@@ -10,9 +10,14 @@ import connect from '../utils/connect';
 import NewCustomerModal from './NewCustomerModal';
 import DeleteCustomerModal from './DeleteCustomerModal';
 
-const mapStateToProps = ({ getCustomersDataStatus, customers }) => ({
+const mapStateToProps = ({
+  getCustomersDataStatus,
+  customers,
+  currentlyEditedCustomerId,
+}) => ({
   getCustomersDataStatus,
   customers: Object.values(customers),
+  currentlyEditedCustomerId,
 });
 
 @connect(mapStateToProps)
@@ -33,11 +38,15 @@ class Customers extends React.Component {
     this.setState({ showNewCustomerModal: false });
   }
 
-  handleShowDeleteCustomerModal = () => {
+  handleShowDeleteCustomerModal = id => () => {
+    const { setCurrentlyEditedCustomerId } = this.props;
+    setCurrentlyEditedCustomerId({ customerId: id });
     this.setState({ showDeleteCustomerModal: true });
   }
 
   handleCloseDeleteCustomerModal = () => {
+    const { resetCurrentlyEditedCustomerId } = this.props;
+    resetCurrentlyEditedCustomerId();
     this.setState({ showDeleteCustomerModal: false });
   }
 
@@ -46,8 +55,13 @@ class Customers extends React.Component {
     getCustomersData();
   }
 
+  deleteCustomer = id => async () => {
+    const { deleteCustomer } = this.props;
+    await deleteCustomer({ customerId: id, handleClose: this.handleCloseDeleteCustomerModal });
+  }
+
   render = () => {
-    const { customers } = this.props;
+    const { customers, currentlyEditedCustomerId } = this.props;
     const { showNewCustomerModal, showDeleteCustomerModal } = this.state;
 
     return (
@@ -70,6 +84,7 @@ class Customers extends React.Component {
             <DeleteCustomerModal
               onHide={this.handleCloseDeleteCustomerModal}
               show={showDeleteCustomerModal}
+              deleteCustomer={this.deleteCustomer(currentlyEditedCustomerId)}
             />
           )}
 
@@ -109,7 +124,7 @@ class Customers extends React.Component {
                         <span className="glyphicon glyphicon-pencil" />
                       </Button>
                       <Button
-                        onClick={this.handleShowDeleteCustomerModal}
+                        onClick={this.handleShowDeleteCustomerModal(id)}
                         variant="outline-danger"
                       >
                         <span className="glyphicon glyphicon-remove" />
