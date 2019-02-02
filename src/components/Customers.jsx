@@ -30,14 +30,6 @@ class Customers extends React.Component {
     };
   }
 
-  handleShowNewCustomerModal = () => {
-    this.setState({ showNewCustomerModal: true });
-  }
-
-  handleCloseNewCustomerModal = () => {
-    this.setState({ showNewCustomerModal: false });
-  }
-
   handleShowDeleteCustomerModal = id => () => {
     const { setCurrentlyEditedCustomerId } = this.props;
     setCurrentlyEditedCustomerId({ customerId: id });
@@ -48,6 +40,18 @@ class Customers extends React.Component {
     const { resetCurrentlyEditedCustomerId } = this.props;
     resetCurrentlyEditedCustomerId();
     this.setState({ showDeleteCustomerModal: false });
+  }
+
+  handleShowEditCustomerModal = id => () => {
+    const { setCurrentlyEditedCustomerId } = this.props;
+    setCurrentlyEditedCustomerId({ customerId: id });
+    this.setState({ showNewCustomerModal: true });
+  }
+
+  handleCloseEditCustomerModal = () => {
+    const { resetCurrentlyEditedCustomerId } = this.props;
+    resetCurrentlyEditedCustomerId();
+    this.setState({ showNewCustomerModal: false });
   }
 
   componentDidMount = () => {
@@ -69,13 +73,13 @@ class Customers extends React.Component {
         <Row>
           <h1 className="h1 mr-auto">Customers list</h1>
 
-          <Button onClick={this.handleShowNewCustomerModal} variant="light">
+          <Button onClick={this.handleShowEditCustomerModal(null)} variant="light">
             Create new customer
           </Button>
 
           {showNewCustomerModal && (
             <NewCustomerModal
-              onHide={this.handleCloseNewCustomerModal}
+              onHide={this.handleCloseEditCustomerModal}
               show={showNewCustomerModal}
             />
           )}
@@ -93,8 +97,8 @@ class Customers extends React.Component {
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Phone</th>
                 <th>Address</th>
+                <th>Phone</th>
                 <th>Created</th>
                 <th>Last updated</th>
                 <th />
@@ -119,6 +123,7 @@ class Customers extends React.Component {
                   <td>
                     <ButtonGroup>
                       <Button
+                        onClick={this.handleShowEditCustomerModal(id)}
                         variant="outline-warning"
                       >
                         <span className="glyphicon glyphicon-pencil" />

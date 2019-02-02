@@ -5,12 +5,13 @@ import connect from '../utils/connect';
 
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
 
-const mapStateToProps = ({ customers }) => ({
+const mapStateToProps = ({ customers, currentlyEditedCustomerId }) => ({
   customers: Object.values(customers),
+  initialValues: customers[currentlyEditedCustomerId],
 });
 
 @connect(mapStateToProps)
-@reduxForm({ form: 'editCustomer' })
+@reduxForm({ form: 'editCustomer', enableReinitialize: true })
 class CustomerEditForm extends React.Component {
   handleSubmit = async (values) => {
     const { handleClose, addCustomer } = this.props;
