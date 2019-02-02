@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import Customers from './Customers';
+import Products from './Products';
 
 const Root = () => (
   <Router>
@@ -31,6 +32,7 @@ const Root = () => (
         </Container>
       </Navbar>
       <Route path="/customers/" component={Customers} />
+      <Route path="/products/" component={Products} />
     </div>
   </Router>
 );

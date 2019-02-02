@@ -23,7 +23,7 @@ export const getCustomersData = () => async (dispatch) => {
   }
 };
 
-export const editCustomerRequest = createAction('CUSTOMER_EDITING_REQUEST');
+export const editCustomerRequest = createAction('CUSTOMER_EDIT_REQUEST');
 export const editCustomerSuccess = createAction('CUSTOMER_EDIT_SUCCESS');
 export const editCustomerFailure = createAction('CUSTOMER_EDIT_FAILURE');
 

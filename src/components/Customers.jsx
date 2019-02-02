@@ -73,7 +73,10 @@ class Customers extends React.Component {
         <Row>
           <h1 className="h1 mr-auto">Customers list</h1>
 
-          <Button onClick={this.handleShowEditCustomerModal(null)} variant="light">
+          <Button
+            onClick={this.handleShowEditCustomerModal(null)}
+            variant="light"
+          >
             Create new customer
           </Button>
 

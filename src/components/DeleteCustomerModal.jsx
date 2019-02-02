@@ -6,6 +6,7 @@ const DeleteCustomerModal = (props) => {
   return (
     <Modal
       {...rest}
+      onHide={onHide}
       centered
       size="lg"
     >
