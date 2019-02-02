@@ -1,8 +1,13 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-const DeleteCustomerModal = (props) => {
-  const { onHide, deleteCustomer, ...rest } = props;
+const DeleteItemModal = (props) => {
+  const {
+    title,
+    onHide,
+    deleteItem,
+    ...rest
+  } = props;
   return (
     <Modal
       {...rest}
@@ -11,17 +16,17 @@ const DeleteCustomerModal = (props) => {
       size="lg"
     >
       <Modal.Header closeButton>
-        <Modal.Title>Delete customer</Modal.Title>
+        <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         Are you sure? This cannot be undone!
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onHide}>Close</Button>
-        <Button onClick={deleteCustomer} variant="danger">Delete</Button>
+        <Button onClick={deleteItem} variant="danger">Delete</Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default DeleteCustomerModal;
+export default DeleteItemModal;

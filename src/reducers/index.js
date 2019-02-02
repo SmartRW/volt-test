@@ -35,10 +35,38 @@ const currentlyEditedCustomerId = handleActions({
   [actions.resetCurrentlyEditedCustomerId]: () => null,
 }, null);
 
+const getProductsDataStatus = handleActions({
+  [actions.productsDataGettingRequest]: () => 'requested',
+  [actions.productsDataGettingSuccess]: () => 'succeeded',
+  [actions.productsDataGettingFailure]: () => 'failed',
+}, '');
+
+const products = handleActions({
+  [actions.updateProductsData]: (state, { payload: { data } }) => data
+    .reduce((acc, product) => ({ ...acc, [product.id]: product }), {}),
+  [actions.addingProduct]: (state, { payload: { data } }) => ({
+    ...state,
+    [data.id]: data,
+  }),
+  [actions.deletingProduct]: (state, { payload: { data } }) => omit(state, data.id),
+  [actions.editingProduct]: (state, { payload: { data } }) => ({
+    ...state,
+    [data.id]: data,
+  }),
+}, {});
+
+const currentlyEditedProductId = handleActions({
+  [actions.setCurrentlyEditedProductId]: (state, { payload: { productId } }) => productId,
+  [actions.resetCurrentlyEditedProductId]: () => null,
+}, null);
+
 export default combineReducers({
   getCustomersDataStatus,
   editCustomerStatus,
   customers,
   currentlyEditedCustomerId,
+  getProductsDataStatus,
+  products,
+  currentlyEditedProductId,
   form: formReducer,
 });

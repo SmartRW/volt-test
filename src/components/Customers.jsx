@@ -7,8 +7,9 @@ import {
   ButtonGroup,
 } from 'react-bootstrap';
 import connect from '../utils/connect';
-import NewCustomerModal from './NewCustomerModal';
-import DeleteCustomerModal from './DeleteCustomerModal';
+import EditItemModal from './EditItemModal';
+import DeleteItemModal from './DeleteItemModal';
+import CustomerEditForm from './CustomerEditForm';
 
 const mapStateToProps = ({
   getCustomersDataStatus,
@@ -25,7 +26,7 @@ class Customers extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showNewCustomerModal: false,
+      showEditCustomerModal: false,
       showDeleteCustomerModal: false,
     };
   }
@@ -45,13 +46,13 @@ class Customers extends React.Component {
   handleShowEditCustomerModal = id => () => {
     const { setCurrentlyEditedCustomerId } = this.props;
     setCurrentlyEditedCustomerId({ customerId: id });
-    this.setState({ showNewCustomerModal: true });
+    this.setState({ showEditCustomerModal: true });
   }
 
   handleCloseEditCustomerModal = () => {
     const { resetCurrentlyEditedCustomerId } = this.props;
     resetCurrentlyEditedCustomerId();
-    this.setState({ showNewCustomerModal: false });
+    this.setState({ showEditCustomerModal: false });
   }
 
   componentDidMount = () => {
@@ -66,7 +67,7 @@ class Customers extends React.Component {
 
   render = () => {
     const { customers, currentlyEditedCustomerId } = this.props;
-    const { showNewCustomerModal, showDeleteCustomerModal } = this.state;
+    const { showEditCustomerModal, showDeleteCustomerModal } = this.state;
 
     return (
       <Container>
@@ -77,21 +78,24 @@ class Customers extends React.Component {
             onClick={this.handleShowEditCustomerModal(null)}
             variant="light"
           >
-            Create new customer
+            Add new customer
           </Button>
 
-          {showNewCustomerModal && (
-            <NewCustomerModal
+          {showEditCustomerModal && (
+            <EditItemModal
               onHide={this.handleCloseEditCustomerModal}
-              show={showNewCustomerModal}
+              show={showEditCustomerModal}
+              title={currentlyEditedCustomerId ? 'Edit customer' : 'Add new customer'}
+              Form={CustomerEditForm}
             />
           )}
 
           {showDeleteCustomerModal && (
-            <DeleteCustomerModal
+            <DeleteItemModal
               onHide={this.handleCloseDeleteCustomerModal}
               show={showDeleteCustomerModal}
-              deleteCustomer={this.deleteCustomer(currentlyEditedCustomerId)}
+              deleteItem={this.deleteCustomer(currentlyEditedCustomerId)}
+              title="Delete customer"
             />
           )}
 

@@ -81,3 +81,83 @@ export const editCustomer = ({
     console.error(e);
   }
 };
+
+export const updateProductsData = createAction('PRODUCTS_DATA_UPDATE');
+
+export const productsDataGettingSuccess = createAction('GET_PRODUCTS_DATA_SUCCESS');
+
+export const productsDataGettingRequest = createAction('GET_PRODUCTS_DATA_REQUEST');
+
+export const productsDataGettingFailure = createAction('GET_PRODUCTS_DATA_FAILURE');
+
+export const getProductsData = () => async (dispatch) => {
+  const url = routes.getProductsUrl();
+  try {
+    dispatch(productsDataGettingRequest());
+    const { data } = await axios.get(url);
+    dispatch(updateProductsData({ data }));
+    dispatch(productsDataGettingSuccess());
+  } catch (e) {
+    dispatch(productsDataGettingFailure());
+    console.error(e);
+  }
+};
+
+export const editProductRequest = createAction('PRODUCT_EDIT_REQUEST');
+export const editProductSuccess = createAction('PRODUCT_EDIT_SUCCESS');
+export const editProductFailure = createAction('PRODUCT_EDIT_FAILURE');
+
+export const addingProduct = createAction('PRODUCT_ADD');
+
+export const addProduct = ({ values, handleClose }) => async (dispatch) => {
+  const url = routes.getProductsUrl();
+  try {
+    dispatch(editProductRequest());
+    const { data } = await axios.post(url, values);
+    dispatch(addingProduct({ data }));
+    handleClose();
+    dispatch(editProductSuccess());
+  } catch (e) {
+    dispatch(editProductFailure());
+    console.error(e);
+  }
+};
+
+export const setCurrentlyEditedProductId = createAction('CURRENTLY_EDITED_PRODUCT_ID_SET');
+export const resetCurrentlyEditedProductId = createAction('CURRENTLY_EDITED_PRODUCT_ID_RESET');
+
+export const deletingProduct = createAction('PRODUCT_DELETE');
+
+export const deleteProduct = ({ productId, handleClose }) => async (dispatch) => {
+  const url = routes.getProductUrl(productId);
+  try {
+    dispatch(editProductRequest());
+    const { data } = await axios.delete(url, productId);
+    dispatch(deletingProduct({ data }));
+    handleClose();
+    dispatch(editProductSuccess());
+  } catch (e) {
+    dispatch(editProductFailure());
+    console.error(e);
+  }
+};
+
+export const editingProduct = createAction('PRODUCT_EDIT');
+
+export const editProduct = ({
+  currentlyEditedProductId,
+  values,
+  handleClose,
+}) => async (dispatch) => {
+  const url = routes.getProductUrl(currentlyEditedProductId);
+  try {
+    dispatch(editProductRequest());
+    const { data } = await axios.put(url, values);
+    dispatch(editingProduct({ data }));
+    handleClose();
+    dispatch(editProductSuccess());
+  } catch (e) {
+    dispatch(editProductFailure());
+    console.error(e);
+  }
+};
