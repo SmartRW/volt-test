@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import Index from './Index';
+import Invoices from './Invoices';
 import Products from './Products';
 import Customers from './Customers';
 
@@ -33,6 +34,7 @@ const Root = () => (
         </Container>
       </Navbar>
       <Route path="/" exact component={Index} />
+      <Route path="/invoices/" exact component={Invoices} />
       <Route path="/customers/" component={Customers} />
       <Route path="/products/" component={Products} />
     </div>

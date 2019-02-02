@@ -161,3 +161,83 @@ export const editProduct = ({
     console.error(e);
   }
 };
+
+export const updateInvoicesData = createAction('INVOICES_DATA_UPDATE');
+
+export const invoicesDataGettingSuccess = createAction('GET_INVOICES_DATA_SUCCESS');
+
+export const invoicesDataGettingRequest = createAction('GET_INVOICES_DATA_REQUEST');
+
+export const invoicesDataGettingFailure = createAction('GET_INVOICES_DATA_FAILURE');
+
+export const getInvoicesData = () => async (dispatch) => {
+  const url = routes.getInvoicesUrl();
+  try {
+    dispatch(invoicesDataGettingRequest());
+    const { data } = await axios.get(url);
+    dispatch(updateInvoicesData({ data }));
+    dispatch(invoicesDataGettingSuccess());
+  } catch (e) {
+    dispatch(invoicesDataGettingFailure());
+    console.error(e);
+  }
+};
+
+export const editInvoiceRequest = createAction('INVOICE_EDIT_REQUEST');
+export const editInvoiceSuccess = createAction('INVOICE_EDIT_SUCCESS');
+export const editInvoiceFailure = createAction('INVOICE_EDIT_FAILURE');
+
+export const addingInvoice = createAction('INVOICE_ADD');
+
+export const addInvoice = ({ values, handleClose }) => async (dispatch) => {
+  const url = routes.getInvoicesUrl();
+  try {
+    dispatch(editInvoiceRequest());
+    const { data } = await axios.post(url, values);
+    dispatch(addingInvoice({ data }));
+    handleClose();
+    dispatch(editInvoiceSuccess());
+  } catch (e) {
+    dispatch(editInvoiceFailure());
+    console.error(e);
+  }
+};
+
+export const setCurrentlyEditedInvoiceId = createAction('CURRENTLY_EDITED_INVOICE_ID_SET');
+export const resetCurrentlyEditedInvoiceId = createAction('CURRENTLY_EDITED_INVOICE_ID_RESET');
+
+export const deletingInvoice = createAction('INVOICE_DELETE');
+
+export const deleteInvoice = ({ invoiceId, handleClose }) => async (dispatch) => {
+  const url = routes.getInvoiceUrl(invoiceId);
+  try {
+    dispatch(editInvoiceRequest());
+    const { data } = await axios.delete(url, invoiceId);
+    dispatch(deletingInvoice({ data }));
+    handleClose();
+    dispatch(editInvoiceSuccess());
+  } catch (e) {
+    dispatch(editInvoiceFailure());
+    console.error(e);
+  }
+};
+
+export const editingInvoice = createAction('INVOICE_EDIT');
+
+export const editInvoice = ({
+  currentlyEditedInvoiceId,
+  values,
+  handleClose,
+}) => async (dispatch) => {
+  const url = routes.getInvoiceUrl(currentlyEditedInvoiceId);
+  try {
+    dispatch(editInvoiceRequest());
+    const { data } = await axios.put(url, values);
+    dispatch(editingInvoice({ data }));
+    handleClose();
+    dispatch(editInvoiceSuccess());
+  } catch (e) {
+    dispatch(editInvoiceFailure());
+    console.error(e);
+  }
+};

@@ -60,6 +60,31 @@ const currentlyEditedProductId = handleActions({
   [actions.resetCurrentlyEditedProductId]: () => null,
 }, null);
 
+const getInvoicesDataStatus = handleActions({
+  [actions.invoicesDataGettingRequest]: () => 'requested',
+  [actions.invoicesDataGettingSuccess]: () => 'succeeded',
+  [actions.invoicesDataGettingFailure]: () => 'failed',
+}, '');
+
+const invoices = handleActions({
+  [actions.updateInvoicesData]: (state, { payload: { data } }) => data
+    .reduce((acc, invoice) => ({ ...acc, [invoice.id]: invoice }), {}),
+  [actions.addingInvoice]: (state, { payload: { data } }) => ({
+    ...state,
+    [data.id]: data,
+  }),
+  [actions.deletingInvoice]: (state, { payload: { data } }) => omit(state, data.id),
+  [actions.editingInvoice]: (state, { payload: { data } }) => ({
+    ...state,
+    [data.id]: data,
+  }),
+}, {});
+
+const currentlyEditedInvoiceId = handleActions({
+  [actions.setCurrentlyEditedInvoiceId]: (state, { payload: { invoiceId } }) => invoiceId,
+  [actions.resetCurrentlyEditedInvoiceId]: () => null,
+}, null);
+
 export default combineReducers({
   getCustomersDataStatus,
   editCustomerStatus,
@@ -68,5 +93,8 @@ export default combineReducers({
   getProductsDataStatus,
   products,
   currentlyEditedProductId,
+  getInvoicesDataStatus,
+  invoices,
+  currentlyEditedInvoiceId,
   form: formReducer,
 });
