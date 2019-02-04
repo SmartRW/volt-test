@@ -8,10 +8,9 @@
   },
   "scripts": {
     "start": "node server/server.js",
-    "build-server": "babel server --out-dir dist --source-maps inline",
+    "build-server": "npx babel server --out-dir dist --source-maps inline",
     "build-app": "npx webpack -p --env production && npx babel src --out-dir dist --source-maps inline",
-    "build": "npm run build-app && npm run build-server",
-    "heroku-postbuild": "npm install --only=dev"
+    "build": "npm run build-app && npm run build-server"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
@@ -33,9 +32,7 @@
     "redux-form": "^8.1.0",
     "redux-thunk": "^2.3.0",
     "sequelize": "^3.20.0",
-    "sqlite3": "^4.0.1"
-  },
-  "devDependencies": {
+    "sqlite3": "^4.0.1",
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.3.0",
@@ -60,5 +57,7 @@
     "webpack-cli": "^3.2.1",
     "webpack-dev-middleware": "^1.2.0",
     "webpack-hot-middleware": "^2.2.0"
+  },
+  "devDependencies": {
   }
 }
