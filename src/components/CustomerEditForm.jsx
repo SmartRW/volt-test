@@ -9,7 +9,6 @@ const mapStateToProps = ({
   customers,
   currentlyEditedCustomerId,
 }) => ({
-  customers: Object.values(customers),
   initialValues: customers[currentlyEditedCustomerId],
   currentlyEditedCustomerId,
 });

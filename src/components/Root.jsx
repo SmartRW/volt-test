@@ -9,6 +9,7 @@ import Index from './Index';
 import Invoices from './Invoices';
 import Products from './Products';
 import Customers from './Customers';
+import EditInvoice from './EditInvoice';
 
 const Root = () => (
   <Router>
@@ -33,10 +34,11 @@ const Root = () => (
           </Nav>
         </Container>
       </Navbar>
-      <Route path="/" exact component={Index} />
-      <Route path="/invoices/" exact component={Invoices} />
+      <Route exact path="/" component={Index} />
+      <Route exact path="/invoices/" component={Invoices} />
       <Route path="/customers/" component={Customers} />
       <Route path="/products/" component={Products} />
+      <Route exact path="/invoices/create-invoice/" component={EditInvoice} />
     </div>
   </Router>
 );

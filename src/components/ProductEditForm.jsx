@@ -9,7 +9,6 @@ const mapStateToProps = ({
   products,
   currentlyEditedProductId,
 }) => ({
-  products: Object.values(products),
   initialValues: products[currentlyEditedProductId],
   currentlyEditedProductId,
 });
