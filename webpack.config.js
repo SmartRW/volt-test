@@ -11,10 +11,7 @@ module.exports = {
     path.join(__dirname, 'src/app.jsx')
   ],
   resolve: {
-    root: [
-      path.resolve(__dirname, "src"),
-    ],
-    extensions: ['', '.js', '.jsx', '.css']
+    extensions: ['.js', '.jsx', '.css']
   },
   output: {
     path: path.join(__dirname, '/dist/public/'),
@@ -27,25 +24,25 @@ module.exports = {
       inject: 'body',
       filename: 'index.html'
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
     })
   ],
   module: {
-    loaders: [{
+    rules: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel'
+      use: 'babel-loader'
     }, {
       test: /\.css$/,
-      loaders: ['style-loader', 'css-loader']
+      use: ['style-loader', 'css-loader']
     },
     {
       test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
-      loader: 'file-loader'
+      use: 'file-loader'
     }]
   }
 };
