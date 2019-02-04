@@ -9,8 +9,8 @@
     "build": "npm run build-app && npm run build-server"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.2.5",
     "axios": "^0.18.0",
-    "babel-polyfill": "^6.26.0",
     "body-parser": "1.15.0",
     "bootstrap": "^4.2.1",
     "express": "~4.13.4",
@@ -35,6 +35,8 @@
     "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.3.0",
     "@babel/plugin-proposal-decorators": "^7.3.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "css-loader": "^0.23.1",
