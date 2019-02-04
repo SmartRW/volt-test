@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   devtool: 'eval-source-map',
+  mode: process.env.NODE_ENV || 'development',
   entry: [
     'webpack-hot-middleware/client?reload=true',
     path.join(__dirname, 'src/app.jsx'),
