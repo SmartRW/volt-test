@@ -1,4 +1,4 @@
-install: npm instal
+install: npm install
 
 start:
 	node server/server.js
