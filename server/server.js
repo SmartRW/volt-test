@@ -142,7 +142,7 @@ var app = module.exports = express();
 app.set('port', process.env.PORT || 8000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../', 'public')));
 
 // CUSTOMERS API
 
@@ -295,7 +295,7 @@ app.route('/api/invoices/:invoice_id/items/:id')
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
-const config = require('./webpack.config.js');
+const config = require('../webpack.config.js');
 
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
@@ -318,13 +318,13 @@ if (isDeveloping) {
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
   app.get('*', function response(req, res) {
-    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'public/index.html')));
+    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, '../', 'public/index.html')));
     res.end();
   });
 } else {
-  app.use(express.static(__dirname + '/public'));
+  app.use(express.static(__dirname + '/..' + '/public'));
   app.get('*', function response(req, res) {
-    res.sendFile(path.join(__dirname, 'public/index.html'));
+    res.sendFile(path.join(__dirname, '../', 'public/index.html'));
   });
 }
 
