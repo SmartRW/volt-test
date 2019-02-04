@@ -1,7 +1,7 @@
 import 'babel-polyfill';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../public/bootstrap/css/bootstrap.min.css';
-// import '../public/bootstrap/css/bootstrap-theme.min.css';
+import '../assets/bootstrap/css/bootstrap.min.css';
+// import '../assets/bootstrap/css/bootstrap-theme.min.css';
 import 'react-select/dist/react-select.css';
 import '../assets/application.css';
 import React from 'react';

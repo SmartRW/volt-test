@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node server/server.js",
     "build-server": "babel server --out-dir dist --source-maps inline",
-    "build-app": "npx webpack -p --env production",
+    "build-app": "npx webpack -p --env production && npx babel src --out-dir dist --source-maps inline",
     "build": "npm run build-app && npm run build-server"
   },
   "dependencies": {

@@ -17,7 +17,7 @@ module.exports = {
     extensions: ['', '.js', '.jsx', '.css']
   },
   output: {
-    path: path.join(__dirname, '/public/'),
+    path: path.join(__dirname, '/dist/public/'),
     filename: '[name].js',
     publicPath: '/'
   },
@@ -41,7 +41,7 @@ module.exports = {
       loader: 'babel'
     }, {
       test: /\.css$/,
-      loader: 'style!css'
+      loaders: ['style-loader', 'css-loader']
     },
     {
       test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
