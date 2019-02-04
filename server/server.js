@@ -6,12 +6,12 @@ var express = require('express'),
     _ = require('lodash');
 
 
-sequelize = new Sequelize('sqlite://' + path.join(__dirname, 'invoices.sqlite'), {
+var sequelize = new Sequelize('sqlite://' + path.join(__dirname, 'invoices.sqlite'), {
   dialect: 'sqlite',
   storage: path.join(__dirname, 'invoices.sqlite')
 });
 
-Customer = sequelize.define('customers', {
+var Customer = sequelize.define('customers', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -28,7 +28,7 @@ Customer = sequelize.define('customers', {
   }
 });
 
-Product = sequelize.define('products', {
+var Product = sequelize.define('products', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -42,7 +42,7 @@ Product = sequelize.define('products', {
   }
 });
 
-Invoice = sequelize.define('invoices', {
+var Invoice = sequelize.define('invoices', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -59,7 +59,7 @@ Invoice = sequelize.define('invoices', {
   }
 });
 
-InvoiceItem = sequelize.define('invoice_items', {
+var InvoiceItem = sequelize.define('invoice_items', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
