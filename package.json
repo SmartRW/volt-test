@@ -1,7 +1,11 @@
 {
   "name": "interviewed-react",
   "version": "0.0.1",
+  "main": "dist/app.js",
   "private": true,
+  "engines": {
+    "node": "9"
+  },
   "scripts": {
     "start": "node server/server.js",
     "build-server": "babel server --out-dir dist --source-maps inline",
