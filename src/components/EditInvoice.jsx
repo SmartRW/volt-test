@@ -1,10 +1,16 @@
 import React from 'react';
-import Select from 'react-select';
 import { Field, reduxForm } from 'redux-form';
-import { Button, Container } from 'react-bootstrap';
+import {
+  Button,
+  Container,
+  Table,
+  ButtonGroup,
+} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import connect from '../utils/connect';
 import checkForEmptyString from '../utils/validators';
+import AddProductForm from './AddProductForm';
+import RenderSelect from './RenderSelect';
 
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
 
@@ -29,6 +35,7 @@ class EditInvoice extends React.Component {
     super(props);
     this.state = {
       redirectToInvoicesListAfterSubmit: false,
+      productsInCurrentInvoice: [],
     };
   }
 
@@ -36,6 +43,11 @@ class EditInvoice extends React.Component {
     const { getProductsData, getCustomersData } = this.props;
     getCustomersData();
     getProductsData();
+  }
+
+  addProductToCurrentInvoice = ({ product }) => {
+    const { productsInCurrentInvoice } = this.state;
+    this.setState({ productsInCurrentInvoice: [...productsInCurrentInvoice, product] });
   }
 
   handleSubmit = async (values) => {
@@ -53,39 +65,31 @@ class EditInvoice extends React.Component {
     this.setState({ redirectToInvoicesListAfterSubmit: true });
   }
 
+
   render = () => {
-    const { redirectToInvoicesListAfterSubmit } = this.state;
+    const { redirectToInvoicesListAfterSubmit, productsInCurrentInvoice } = this.state;
     const {
       handleSubmit,
       submitting,
       customers,
       products,
     } = this.props;
-    const renderSelect = options => (props) => {
-      const { input, meta: { touched, error } } = props;
-      const { value, onBlur } = input;
-      return (
-        <>
-          <Select
-            {...input}
-            onBlur={() => onBlur(value)}
-            options={options}
-          />
-          {touched && (error && <small className="form-text text-mute text-danger">{error}</small>)}
-        </>
-      );
-    };
 
     return (
       <Container>
-        <form className="form d-flex flex-column align-items-start" onSubmit={handleSubmit(this.handleSubmit)}>
+        <form
+          id="editInvoice"
+          className="form d-flex flex-column align-items-start"
+          onSubmit={handleSubmit(this.handleSubmit)}
+        >
           <div className="form-group align-self-stretch">
             <label htmlFor="customer">Customer</label>
             <Field
               className="form-control"
               name="customer"
               id="customer"
-              component={renderSelect(customers)}
+              component={RenderSelect}
+              options={customers}
               disabled={submitting}
               validate={[checkForEmptyString]}
             />
@@ -102,20 +106,55 @@ class EditInvoice extends React.Component {
               disabled={submitting}
             />
           </div>
-          <div className="form-group align-self-stretch">
-            <label htmlFor="product">Add product</label>
-            <Field
-              className="form-control"
-              name="product"
-              id="product"
-              component={renderSelect(products)}
-              disabled={submitting}
-              validate={[checkForEmptyString]}
-            />
-          </div>
-          <Button variant="light" type="submit" disabled={submitting}>Submit</Button>
         </form>
+        <AddProductForm onSubmit={this.addProductToCurrentInvoice} options={products} />
+        <Button
+          form="editInvoice"
+          variant="light"
+          type="submit"
+          disabled={submitting}
+        >
+          Save invoice
+        </Button>
+
         {redirectToInvoicesListAfterSubmit && <Redirect to="/invoices" />}
+
+        <Table striped>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            {productsInCurrentInvoice.map(({ value, label }, idx) => (
+              <tr key={value}>
+                <td>{idx + 1}</td>
+                <td>{label}</td>
+                <td>{value}</td>
+                <td>1</td>
+                <td>
+                  <ButtonGroup>
+                    <Button
+
+                      variant="outline-warning"
+                    >
+                      <span className="glyphicon glyphicon-pencil" />
+                    </Button>
+                    <Button
+                      variant="outline-danger"
+                    >
+                      <span className="glyphicon glyphicon-remove" />
+                    </Button>
+                  </ButtonGroup>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </Container>
     );
   }
