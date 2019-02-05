@@ -13,10 +13,13 @@ import DeleteItemModal from './DeleteItemModal';
 const mapStateToProps = ({
   getInvoicesDataStatus,
   invoices,
+  customers,
   currentlyEditedInvoiceId,
 }) => ({
   getInvoicesDataStatus,
   invoices: Object.values(invoices),
+  customers: Object.keys(customers)
+    .reduce((acc, id) => ({ ...acc, [id]: customers[id].name }), {}),
   currentlyEditedInvoiceId,
 });
 
@@ -42,18 +45,19 @@ class Invoices extends React.Component {
   }
 
   componentDidMount = () => {
-    const { getInvoicesData } = this.props;
+    const { getInvoicesData, getCustomersData } = this.props;
     document.title = 'Invoices';
     getInvoicesData();
+    getCustomersData();
   }
 
   deleteInvoice = id => async () => {
     const { deleteInvoice } = this.props;
-    await deleteInvoice({ invioceId: id, handleClose: this.handleCloseDeleteInvoiceModal });
+    await deleteInvoice({ invoiceId: id, handleClose: this.handleCloseDeleteInvoiceModal });
   }
 
   render = () => {
-    const { invoices, currentlyEditedInvoiceId } = this.props;
+    const { invoices, customers, currentlyEditedInvoiceId } = this.props;
     const { showDeleteInvoiceModal } = this.state;
 
     return (
@@ -91,7 +95,7 @@ class Invoices extends React.Component {
             <tbody>
               {invoices.map(({
                 id,
-                customer,
+                customer_id, // eslint-disable-line camelcase
                 discount,
                 total,
                 createdAt,
@@ -99,7 +103,7 @@ class Invoices extends React.Component {
               }, idx) => (
                 <tr key={id}>
                   <td>{idx + 1}</td>
-                  <td>{customer}</td>
+                  <td>{customers[customer_id]}</td>
                   <td>{discount}</td>
                   <td>{total}</td>
                   <td>{createdAt}</td>

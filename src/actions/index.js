@@ -189,13 +189,13 @@ export const editInvoiceFailure = createAction('INVOICE_EDIT_FAILURE');
 
 export const addingInvoice = createAction('INVOICE_ADD');
 
-export const addInvoice = ({ values, handleClose }) => async (dispatch) => {
+export const addInvoice = ({ values: { customer, discount } }) => async (dispatch) => {
   const url = routes.getInvoicesUrl();
+  const normalizedValues = { customer_id: customer.value, discount };
   try {
     dispatch(editInvoiceRequest());
-    const { data } = await axios.post(url, values);
+    const { data } = await axios.post(url, normalizedValues);
     dispatch(addingInvoice({ data }));
-    handleClose();
     dispatch(editInvoiceSuccess());
   } catch (e) {
     dispatch(editInvoiceFailure());
