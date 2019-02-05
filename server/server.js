@@ -305,6 +305,7 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 
 if (isDeveloping) {
+  console.log('is developing!!!');
   const compiler = webpack(config);
   const middleware = webpackMiddleware(compiler, {
     publicPath: config.output.publicPath,
@@ -326,6 +327,7 @@ if (isDeveloping) {
     res.end();
   });
 } else {
+  console.log('is production!!!');
   app.use(express.static(path.join(__dirname, 'public')));
   app.get('*', function response(req, res) {
     res.sendFile(path.join(__dirname, 'public/index.html'));
