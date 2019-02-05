@@ -3,6 +3,7 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     Sequelize = require('sequelize'),
+    historyApiFallback = require('connect-history-api-fallback');
     _ = require('lodash');
 
 
@@ -139,6 +140,9 @@ sequelize.sync()
 });
 
 var app = module.exports = express();
+app.use(historyApiFallback({
+  verbose: false
+}));
 app.set('port', process.env.PORT || 8000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
