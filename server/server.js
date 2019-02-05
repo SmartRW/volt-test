@@ -3,7 +3,7 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     Sequelize = require('sequelize'),
-    historyApiFallback = require('connect-history-api-fallback');
+    historyApiFallback = require('connect-history-api-fallback'),
     _ = require('lodash');
 
 
