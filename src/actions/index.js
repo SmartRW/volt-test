@@ -241,3 +241,7 @@ export const editInvoice = ({
     console.error(e);
   }
 };
+
+export const addProductToCurrentInvoice = createAction('CURRENT_INVOICE_PRODUCT_ADD');
+
+export const resetCurrentInvoice = createAction('CURRENT_INVOICE_RESET');

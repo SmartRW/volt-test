@@ -19,11 +19,14 @@ const mapStateToProps = ({
   currentlyEditedInvoiceId,
   customers,
   products,
+  currentInvoice,
 }) => ({
   customers: Object.values(customers)
     .map(({ id, name }) => ({ label: name, value: id })),
-  products: Object.values(products)
+  productsForSelect: Object.values(products)
     .map(({ id, name }) => ({ label: name, value: id })),
+  products,
+  currentInvoice: Object.values(currentInvoice),
   initialValues: invoices[currentlyEditedInvoiceId],
   currentlyEditedInvoiceId,
 });
@@ -35,7 +38,6 @@ class EditInvoice extends React.Component {
     super(props);
     this.state = {
       redirectToInvoicesListAfterSubmit: false,
-      productsInCurrentInvoice: [],
     };
   }
 
@@ -45,9 +47,10 @@ class EditInvoice extends React.Component {
     getProductsData();
   }
 
-  addProductToCurrentInvoice = ({ product }) => {
-    const { productsInCurrentInvoice } = this.state;
-    this.setState({ productsInCurrentInvoice: [...productsInCurrentInvoice, product] });
+  addProductToCurrentInvoice = ({ product: { value } }) => {
+    const { addProductToCurrentInvoice } = this.props;
+    const data = { id: value, qty: 1 };
+    addProductToCurrentInvoice({ data });
   }
 
   handleSubmit = async (values) => {
@@ -55,6 +58,7 @@ class EditInvoice extends React.Component {
       addInvoice,
       editInvoice,
       currentlyEditedInvoiceId,
+      resetCurrentInvoice,
     } = this.props;
 
     if (currentlyEditedInvoiceId) {
@@ -62,17 +66,20 @@ class EditInvoice extends React.Component {
     } else {
       await addInvoice({ values });
     }
+    resetCurrentInvoice();
     this.setState({ redirectToInvoicesListAfterSubmit: true });
   }
 
 
   render = () => {
-    const { redirectToInvoicesListAfterSubmit, productsInCurrentInvoice } = this.state;
+    const { redirectToInvoicesListAfterSubmit } = this.state;
     const {
       handleSubmit,
       submitting,
       customers,
+      productsForSelect,
       products,
+      currentInvoice,
     } = this.props;
 
     return (
@@ -107,7 +114,7 @@ class EditInvoice extends React.Component {
             />
           </div>
         </form>
-        <AddProductForm onSubmit={this.addProductToCurrentInvoice} options={products} />
+        <AddProductForm onSubmit={this.addProductToCurrentInvoice} options={productsForSelect} />
         <Button
           form="editInvoice"
           variant="light"
@@ -130,16 +137,15 @@ class EditInvoice extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {productsInCurrentInvoice.map(({ value, label }, idx) => (
-              <tr key={value}>
+            {currentInvoice.map(({ id, qty }, idx) => (
+              <tr key={id}>
                 <td>{idx + 1}</td>
-                <td>{label}</td>
-                <td>{value}</td>
-                <td>1</td>
+                <td>{products[id].name}</td>
+                <td>{products[id].price}</td>
+                <td>{qty}</td>
                 <td>
                   <ButtonGroup>
                     <Button
-
                       variant="outline-warning"
                     >
                       <span className="glyphicon glyphicon-pencil" />

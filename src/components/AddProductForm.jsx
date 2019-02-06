@@ -2,6 +2,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Button } from 'react-bootstrap';
 import RenderSelect from './RenderSelect';
+import checkForEmptyString from '../utils/validators';
 
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
 
@@ -29,6 +30,7 @@ class AddProductForm extends React.Component {
             component={RenderSelect}
             options={options}
             disabled={submitting}
+            validate={checkForEmptyString}
           />
         </div>
         <Button
