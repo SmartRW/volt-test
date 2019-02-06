@@ -161,6 +161,11 @@ class EditInvoice extends React.Component {
             ))}
           </tbody>
         </Table>
+        <div className="display-4">
+          Total:
+          {currentInvoice
+            .reduce((sum, { id, qty }) => sum + (products[id].price * qty), 0).toFixed(2)}
+        </div>
       </Container>
     );
   }
