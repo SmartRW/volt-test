@@ -243,5 +243,7 @@ export const editInvoice = ({
 };
 
 export const addProductToCurrentInvoice = createAction('CURRENT_INVOICE_PRODUCT_ADD');
+export const resetCurrentInvoiceProducts = createAction('CURRENT_INVOICE_PRODUCTS_RESET');
 
+export const changeDiscount = createAction('DISCOUNT_CHANGE');
 export const resetCurrentInvoice = createAction('CURRENT_INVOICE_RESET');

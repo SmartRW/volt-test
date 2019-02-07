@@ -11,6 +11,7 @@ import connect from '../utils/connect';
 import checkForEmptyString from '../utils/validators';
 import AddProductForm from './AddProductForm';
 import RenderSelect from './RenderSelect';
+import calculateTotal from '../utils/calculateTotal';
 
 /* eslint-disable jsx-a11y/label-has-for, jsx-a11y/label-has-associated-control */
 
@@ -20,13 +21,16 @@ const mapStateToProps = ({
   customers,
   products,
   currentInvoice,
+  currentInvoiceProducts,
 }) => ({
   customers: Object.values(customers)
     .map(({ id, name }) => ({ label: name, value: id })),
   productsForSelect: Object.values(products)
     .map(({ id, name }) => ({ label: name, value: id })),
   products,
-  currentInvoice: Object.values(currentInvoice),
+  currentInvoiceProducts: Object.values(currentInvoiceProducts)
+    .map(({ id, qty }) => ({ id, qty, price: products[id].price })),
+  currentInvoice,
   initialValues: invoices[currentlyEditedInvoiceId],
   currentlyEditedInvoiceId,
 });
@@ -53,12 +57,18 @@ class EditInvoice extends React.Component {
     addProductToCurrentInvoice({ data });
   }
 
+  changeDiscount = ({ target }) => {
+    const { changeDiscount } = this.props;
+    changeDiscount({ discount: target.value });
+  };
+
   handleSubmit = async (values) => {
     const {
       addInvoice,
       editInvoice,
       currentlyEditedInvoiceId,
       resetCurrentInvoice,
+      resetCurrentInvoiceProducts,
     } = this.props;
 
     if (currentlyEditedInvoiceId) {
@@ -67,6 +77,7 @@ class EditInvoice extends React.Component {
       await addInvoice({ values });
     }
     resetCurrentInvoice();
+    resetCurrentInvoiceProducts();
     this.setState({ redirectToInvoicesListAfterSubmit: true });
   }
 
@@ -80,6 +91,7 @@ class EditInvoice extends React.Component {
       productsForSelect,
       products,
       currentInvoice,
+      currentInvoiceProducts,
     } = this.props;
 
     return (
@@ -111,6 +123,7 @@ class EditInvoice extends React.Component {
               type="number"
               required
               disabled={submitting}
+              onChange={this.changeDiscount}
             />
           </div>
         </form>
@@ -137,7 +150,7 @@ class EditInvoice extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {currentInvoice.map(({ id, qty }, idx) => (
+            {currentInvoiceProducts.map(({ id, qty }, idx) => (
               <tr key={id}>
                 <td>{idx + 1}</td>
                 <td>{products[id].name}</td>
@@ -163,8 +176,7 @@ class EditInvoice extends React.Component {
         </Table>
         <div className="display-4">
           Total:
-          {currentInvoice
-            .reduce((sum, { id, qty }) => sum + (products[id].price * qty), 0).toFixed(2)}
+          {calculateTotal(currentInvoiceProducts, currentInvoice.discount)}
         </div>
       </Container>
     );

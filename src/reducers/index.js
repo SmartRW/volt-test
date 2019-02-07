@@ -85,12 +85,20 @@ const currentlyEditedInvoiceId = handleActions({
   [actions.resetCurrentlyEditedInvoiceId]: () => null,
 }, null);
 
-const currentInvoice = handleActions({
+const currentInvoiceProducts = handleActions({
   [actions.addProductToCurrentInvoice]: (state, { payload: { data } }) => ({
     ...state,
-    [data.id]: { ...data, qty: data.qty },
+    [data.id]: data,
   }),
-  [actions.resetCurrentInvoice]: () => ({}),
+  [actions.resetCurrentInvoiceProducts]: () => ({}),
+}, {});
+
+const currentInvoice = handleActions({
+  [actions.changeDiscount]: (state, { payload: { discount } }) => ({
+    ...state,
+    discount,
+  }),
+  [actions.resetCurrentInvoiceProducts]: () => ({}),
 }, {});
 
 export default combineReducers({
@@ -105,5 +113,6 @@ export default combineReducers({
   invoices,
   currentlyEditedInvoiceId,
   currentInvoice,
+  currentInvoiceProducts,
   form: formReducer,
 });
