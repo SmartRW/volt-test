@@ -4,7 +4,6 @@ import {
   Button,
   Container,
   Table,
-  ButtonGroup,
 } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import connect from '../utils/connect';
@@ -27,9 +26,10 @@ const mapStateToProps = ({
     .map(({ id, name }) => ({ label: name, value: id })),
   productsForSelect: Object.values(products)
     .map(({ id, name }) => ({ label: name, value: id })),
-  products,
   currentInvoiceProducts: Object.values(currentInvoiceProducts)
-    .map(({ id, qty }) => ({ id, qty, price: products[id].price })),
+    .map(({ id, qty }) => ({
+      id, qty, price: products[id].price, name: products[id].name,
+    })),
   currentInvoice,
   initialValues: invoices[currentlyEditedInvoiceId],
   currentlyEditedInvoiceId,
@@ -62,6 +62,12 @@ class EditInvoice extends React.Component {
     changeDiscount({ discount: target.value });
   };
 
+  removeProduct = id => () => {
+    const { removeProductFromCurrentInvoice } = this.props;
+    const data = { id };
+    removeProductFromCurrentInvoice({ data });
+  }
+
   handleSubmit = async (values) => {
     const {
       addInvoice,
@@ -89,7 +95,6 @@ class EditInvoice extends React.Component {
       submitting,
       customers,
       productsForSelect,
-      products,
       currentInvoice,
       currentInvoiceProducts,
     } = this.props;
@@ -150,25 +155,21 @@ class EditInvoice extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {currentInvoiceProducts.map(({ id, qty }, idx) => (
+            {currentInvoiceProducts.map(({
+              id, qty, price, name,
+            }, idx) => (
               <tr key={id}>
                 <td>{idx + 1}</td>
-                <td>{products[id].name}</td>
-                <td>{products[id].price}</td>
+                <td>{name}</td>
+                <td>{price}</td>
                 <td>{qty}</td>
                 <td>
-                  <ButtonGroup>
-                    <Button
-                      variant="outline-warning"
-                    >
-                      <span className="glyphicon glyphicon-pencil" />
-                    </Button>
-                    <Button
-                      variant="outline-danger"
-                    >
-                      <span className="glyphicon glyphicon-remove" />
-                    </Button>
-                  </ButtonGroup>
+                  <Button
+                    variant="outline-danger"
+                    onClick={this.removeProduct(id)}
+                  >
+                    <span className="glyphicon glyphicon-remove" />
+                  </Button>
                 </td>
               </tr>
             ))}
