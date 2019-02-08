@@ -109,7 +109,6 @@ class EditInvoice extends React.Component {
       submitting,
       customers,
       productsForSelect,
-      currentInvoice,
       currentInvoiceProducts,
     } = this.props;
 
