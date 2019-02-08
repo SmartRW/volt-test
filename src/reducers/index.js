@@ -92,6 +92,13 @@ const currentInvoiceProducts = handleActions({
   }),
   [actions.removeProductFromCurrentInvoice]: (state, { payload: { data } }) => omit(state, data.id),
   [actions.resetCurrentInvoiceProducts]: () => ({}),
+  [actions.changeProductQty]: (state, { payload: { id, qty } }) => ({
+    ...state,
+    [id]: {
+      ...state[id],
+      qty,
+    },
+  }),
 }, {});
 
 const currentInvoice = handleActions({

@@ -248,3 +248,5 @@ export const removeProductFromCurrentInvoice = createAction('CURRENT_INVOICE_PRO
 
 export const changeDiscount = createAction('DISCOUNT_CHANGE');
 export const resetCurrentInvoice = createAction('CURRENT_INVOICE_RESET');
+
+export const changeProductQty = createAction('PRODUCT_QTY_CHANGE');

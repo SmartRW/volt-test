@@ -31,7 +31,11 @@ const mapStateToProps = ({
       id, qty, price: products[id].price, name: products[id].name,
     })),
   currentInvoice,
-  initialValues: invoices[currentlyEditedInvoiceId],
+  initialValues: {
+    ...Object.keys(products)
+      .reduce((acc, id) => ({ ...acc, [`product-${id}`]: 1 }), {}),
+    ...invoices[currentlyEditedInvoiceId],
+  },
   currentlyEditedInvoiceId,
 });
 
@@ -66,6 +70,11 @@ class EditInvoice extends React.Component {
     const { removeProductFromCurrentInvoice } = this.props;
     const data = { id };
     removeProductFromCurrentInvoice({ data });
+  }
+
+  changeProductQty = id => ({ target }) => {
+    const { changeProductQty } = this.props;
+    changeProductQty({ id, qty: target.value });
   }
 
   handleSubmit = async (values) => {
@@ -129,6 +138,8 @@ class EditInvoice extends React.Component {
               required
               disabled={submitting}
               onChange={this.changeDiscount}
+              min="0"
+              max="100"
             />
           </div>
         </form>
@@ -137,13 +148,12 @@ class EditInvoice extends React.Component {
           form="editInvoice"
           variant="light"
           type="submit"
-          disabled={submitting}
+          disabled={submitting || currentInvoiceProducts.length === 0}
         >
           Save invoice
         </Button>
 
         {redirectToInvoicesListAfterSubmit && <Redirect to="/invoices" />}
-
         <Table striped>
           <thead>
             <tr>
@@ -156,13 +166,22 @@ class EditInvoice extends React.Component {
           </thead>
           <tbody>
             {currentInvoiceProducts.map(({
-              id, qty, price, name,
+              id, price, name,
             }, idx) => (
               <tr key={id}>
                 <td>{idx + 1}</td>
                 <td>{name}</td>
                 <td>{price}</td>
-                <td>{qty}</td>
+                <td>
+                  <Field
+                    name={`product-${id}`}
+                    component="input"
+                    type="number"
+                    min="1"
+                    max="100"
+                    onChange={this.changeProductQty(id)}
+                  />
+                </td>
                 <td>
                   <Button
                     variant="outline-danger"
