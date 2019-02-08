@@ -77,6 +77,11 @@ class EditInvoice extends React.Component {
     changeProductQty({ id, qty: target.value });
   }
 
+  calculateTotal = () => {
+    const { currentInvoiceProducts, currentInvoice } = this.props;
+    return calculateTotal(currentInvoiceProducts, currentInvoice.discount);
+  };
+
   handleSubmit = async (values) => {
     const {
       addInvoice,
@@ -89,7 +94,7 @@ class EditInvoice extends React.Component {
     if (currentlyEditedInvoiceId) {
       await editInvoice({ currentlyEditedInvoiceId, values });
     } else {
-      await addInvoice({ values });
+      await addInvoice({ ...values, total: this.calculateTotal() });
     }
     resetCurrentInvoice();
     resetCurrentInvoiceProducts();
@@ -196,7 +201,7 @@ class EditInvoice extends React.Component {
         </Table>
         <div className="display-4">
           Total:
-          {calculateTotal(currentInvoiceProducts, currentInvoice.discount)}
+          {this.calculateTotal()}
         </div>
       </Container>
     );
