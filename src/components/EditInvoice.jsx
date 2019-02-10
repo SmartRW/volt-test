@@ -34,6 +34,7 @@ const mapStateToProps = ({
   initialValues: {
     ...Object.keys(products)
       .reduce((acc, id) => ({ ...acc, [`product-${id}`]: 1 }), {}),
+    discount: 0,
     ...invoices[currentlyEditedInvoiceId],
   },
   currentlyEditedInvoiceId,
